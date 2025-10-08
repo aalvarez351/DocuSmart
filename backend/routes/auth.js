@@ -6,6 +6,7 @@ const Empresa = require('../models/Empresa');
 const { auth } = require('../middleware/auth');
 
 const router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET || 'docusmart-super-secret-key-2024-panama-jwt-256-bits';
 
 // @route   POST /api/auth/register
 // @desc    Registrar nueva empresa y usuario admin
@@ -96,7 +97,7 @@ router.post('/register', [
 
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 
@@ -195,7 +196,7 @@ router.post('/login', [
 
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 
@@ -283,7 +284,7 @@ router.post('/refresh', auth, async (req, res) => {
 
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 

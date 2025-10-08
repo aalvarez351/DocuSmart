@@ -8,7 +8,8 @@ const compression = require('compression');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
+const JWT_SECRET = process.env.JWT_SECRET || 'docusmart-super-secret-key-2024-panama-jwt-256-bits';
 
 // Middleware de seguridad
 app.use(helmet());
@@ -34,7 +35,10 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Conexión a MongoDB Atlas - Base de datos: DocuSmart
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/DocuSmart', {
+const mongoUri = process.env.MONGO_URI || 
+  'mongodb+srv://aalvarez351:Lentesdesol@ianube.furqsl0.mongodb.net/DocuSmart?retryWrites=true&w=majority';
+
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
