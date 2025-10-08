@@ -1,0 +1,52 @@
+services:
+  # Backend API en Render.com
+  - type: web
+    name: docusmart-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    healthCheckPath: /api/status
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        fromDatabase:
+          name: docusmart-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: PAC_API_KEY
+        sync: false
+      - key: PAC_API_URL
+        value: https://api-pac-sandbox.com/v1
+      - key: FRONTEND_URL
+        value: https://tu-usuario.github.io/DocuSmart
+
+databases:
+  # MongoDB en Render (alternativa a Atlas)
+  - name: docusmart-db
+    databaseName: DocuSmart
+    user: docusmart_user
+    region: oregon
+    plan: free
+
+# Configuración adicional para el proyecto
+buildCommand: |
+  echo "Configurando DocuSmart para producción..."
+  cd backend
+  npm install --production
+  echo "✅ Backend configurado"
+
+# Variables de entorno requeridas (configurar en Render Dashboard)
+# MONGO_URI - Conexión a MongoDB Atlas
+# JWT_SECRET - Clave secreta para JWT (generar automáticamente)
+# OPENAI_API_KEY - Clave de OpenAI para generación de contratos
+# PAC_API_KEY - Clave del PAC para facturación electrónica
+# PAC_API_URL - URL del PAC (sandbox o producción)
+# FRONTEND_URL - URL del frontend en GitHub Pages

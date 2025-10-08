@@ -1,0 +1,54 @@
+{
+  "name": "docusmart",
+  "version": "1.0.0",
+  "description": "Asistente Legal-Contable con IA para PYMEs en Panamá",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "setup": "npm run setup:backend && npm run setup:frontend && npm run setup:db",
+    "setup:backend": "cd backend && npm install",
+    "setup:frontend": "cd frontend && npm install",
+    "setup:db": "cd backend && npm run seed",
+    "deploy": "npm run build && npm run deploy:frontend && npm run deploy:backend",
+    "deploy:frontend": "cd frontend && npm run deploy",
+    "deploy:backend": "cd backend && npm run deploy",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "facturacion-electronica",
+    "panama",
+    "pymes",
+    "ia",
+    "contratos",
+    "dgi",
+    "pac",
+    "saas"
+  ],
+  "author": "DocuSmart Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/DocuSmart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tu-usuario/DocuSmart/issues"
+  },
+  "homepage": "https://docusmart.pa"
+}

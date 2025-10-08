@@ -1,0 +1,60 @@
+{
+  "name": "docusmart-frontend",
+  "version": "1.0.0",
+  "description": "Frontend React para DocuSmart - Asistente Legal-Contable con IA",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.18.0",
+    "axios": "^1.6.0",
+    "react-hook-form": "^7.47.0",
+    "react-query": "^3.39.3",
+    "zustand": "^4.4.6",
+    "lucide-react": "^0.292.0",
+    "react-hot-toast": "^2.4.1",
+    "date-fns": "^2.30.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "vite": "^4.5.0",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "tailwindcss": "^3.3.5",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "gh-pages": "^6.0.0",
+    "vitest": "^0.34.6",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/jest-dom": "^6.1.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "docusmart",
+    "react",
+    "vite",
+    "facturacion",
+    "panama",
+    "ia",
+    "contratos"
+  ],
+  "author": "DocuSmart Team",
+  "license": "MIT",
+  "homepage": "https://tu-usuario.github.io/DocuSmart"
+}
