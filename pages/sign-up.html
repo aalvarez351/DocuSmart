@@ -186,6 +186,19 @@
   <!--   Core JS Files   -->
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script>
+    // Fix PerfectScrollbar error
+    window.addEventListener('load', function() {
+      try {
+        if (typeof Scrollbar !== 'undefined') {
+          const scrollElements = document.querySelectorAll('.ps, #sidenav-scrollbar');
+          scrollElements.forEach(el => {
+            if (el) Scrollbar.init(el, { damping: '0.5' });
+          });
+        }
+      } catch (e) { console.log('PerfectScrollbar init skipped'); }
+    });
+  </script>
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
