@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>DocuSmart - Procesos del Sistema</title>
+  <link href="../assets/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body class="g-sidenav-show bg-gray-200">
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <div class="container-fluid py-4">
+      
+      <!-- Header -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex align-items-center">
+                <i class="material-symbols-rounded text-primary me-3" style="font-size: 2rem;">settings</i>
+                <div>
+                  <h4 class="mb-0">Procesos y Operaciones del Sistema</h4>
+                  <p class="text-sm mb-0">Comprende cómo funciona DocuSmart internamente</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arquitectura del Sistema -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6><i class="material-symbols-rounded me-2">architecture</i>Arquitectura del Sistema</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="text-center p-3 border rounded">
+                    <i class="material-symbols-rounded text-info mb-2" style="font-size: 3rem;">web</i>
+                    <h6>Frontend</h6>
+                    <p class="text-sm">React + Material Dashboard<br>GitHub Pages</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-center p-3 border rounded">
+                    <i class="material-symbols-rounded text-success mb-2" style="font-size: 3rem;">dns</i>
+                    <h6>Backend API</h6>
+                    <p class="text-sm">Node.js + Express<br>Render.com</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-center p-3 border rounded">
+                    <i class="material-symbols-rounded text-warning mb-2" style="font-size: 3rem;">storage</i>
+                    <h6>Base de Datos</h6>
+                    <p class="text-sm">MongoDB Atlas<br>Cluster: ianube</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flujo de Procesos -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6><i class="material-symbols-rounded me-2">account_tree</i>Flujo de Procesos Principales</h6>
+            </div>
+            <div class="card-body">
+              <div class="timeline timeline-one-side">
+                <div class="timeline-block mb-3">
+                  <span class="timeline-step">
+                    <i class="material-symbols-rounded text-primary">login</i>
+                  </span>
+                  <div class="timeline-content">
+                    <h6 class="text-dark text-sm font-weight-bold mb-0">1. Autenticación</h6>
+                    <p class="text-secondary text-xs mt-1 mb-0">JWT + bcrypt → Verificación de credenciales → Generación de token</p>
+                  </div>
+                </div>
+                <div class="timeline-block mb-3">
+                  <span class="timeline-step">
+                    <i class="material-symbols-rounded text-success">person_add</i>
+                  </span>
+                  <div class="timeline-content">
+                    <h6 class="text-dark text-sm font-weight-bold mb-0">2. Gestión de Clientes</h6>
+                    <p class="text-secondary text-xs mt-1 mb-0">CRUD completo → Validación RUC/Cédula → Analytics tracking</p>
+                  </div>
+                </div>
+                <div class="timeline-block mb-3">
+                  <span class="timeline-step">
+                    <i class="material-symbols-rounded text-info">receipt</i>
+                  </span>
+                  <div class="timeline-content">
+                    <h6 class="text-dark text-sm font-weight-bold mb-0">3. Facturación Electrónica</h6>
+                    <p class="text-secondary text-xs mt-1 mb-0">Creación → Validación DGI → Envío PAC → XML firmado</p>
+                  </div>
+                </div>
+                <div class="timeline-block mb-3">
+                  <span class="timeline-step">
+                    <i class="material-symbols-rounded text-warning">auto_awesome</i>
+                  </span>
+                  <div class="timeline-content">
+                    <h6 class="text-dark text-sm font-weight-bold mb-0">4. Contratos IA</h6>
+                    <p class="text-secondary text-xs mt-1 mb-0">OpenAI API → Generación automática → Revisión legal → Firma digital</p>
+                  </div>
+                </div>
+                <div class="timeline-block mb-3">
+                  <span class="timeline-step">
+                    <i class="material-symbols-rounded text-dark">analytics</i>
+                  </span>
+                  <div class="timeline-content">
+                    <h6 class="text-dark text-sm font-weight-bold mb-0">5. Analytics</h6>
+                    <p class="text-secondary text-xs mt-1 mb-0">Tracking eventos → Agregación datos → Métricas tiempo real</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Base de Datos -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6><i class="material-symbols-rounded me-2">database</i>Estructura de Base de Datos</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="text-primary">Colecciones Principales</h6>
+                  <ul class="list-unstyled">
+                    <li><strong>empresas:</strong> Datos de las PYMEs registradas</li>
+                    <li><strong>users:</strong> Usuarios con roles (admin, contador, usuario)</li>
+                    <li><strong>clientes:</strong> Base de clientes por empresa</li>
+                    <li><strong>facturas:</strong> Facturas electrónicas y estados</li>
+                    <li><strong>contratos:</strong> Contratos generados con IA</li>
+                    <li><strong>analytics:</strong> Eventos y métricas del sistema</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="text-success">Características Técnicas</h6>
+                  <ul class="list-unstyled">
+                    <li>• <strong>Índices optimizados</strong> para consultas rápidas</li>
+                    <li>• <strong>Referencias cruzadas</strong> entre colecciones</li>
+                    <li>• <strong>Validación de esquemas</strong> con Mongoose</li>
+                    <li>• <strong>Agregaciones</strong> para reportes complejos</li>
+                    <li>• <strong>Backup automático</strong> en MongoDB Atlas</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integraciones -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6><i class="material-symbols-rounded me-2">integration_instructions</i>Integraciones Externas</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card border">
+                    <div class="card-body text-center">
+                      <i class="material-symbols-rounded text-primary mb-2" style="font-size: 2rem;">government</i>
+                      <h6>DGI Panamá</h6>
+                      <p class="text-sm">Validación de RUC<br>Cumplimiento fiscal<br>Reportes automáticos</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card border">
+                    <div class="card-body text-center">
+                      <i class="material-symbols-rounded text-success mb-2" style="font-size: 2rem;">verified</i>
+                      <h6>PAC Certificado</h6>
+                      <p class="text-sm">Firma digital<br>Timbrado fiscal<br>XML válido</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card border">
+                    <div class="card-body text-center">
+                      <i class="material-symbols-rounded text-warning mb-2" style="font-size: 2rem;">psychology</i>
+                      <h6>OpenAI API</h6>
+                      <p class="text-sm">Generación IA<br>Contratos legales<br>Español panameño</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seguridad -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6><i class="material-symbols-rounded me-2">security</i>Seguridad y Cumplimiento</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="text-danger">Medidas de Seguridad</h6>
+                  <ul class="list-unstyled">
+                    <li>• <strong>JWT Tokens:</strong> Autenticación segura</li>
+                    <li>• <strong>bcrypt:</strong> Hash de contraseñas</li>
+                    <li>• <strong>HTTPS:</strong> Encriptación end-to-end</li>
+                    <li>• <strong>Rate Limiting:</strong> Protección contra ataques</li>
+                    <li>• <strong>CORS:</strong> Control de acceso por origen</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="text-info">Cumplimiento Legal</h6>
+                  <ul class="list-unstyled">
+                    <li>• <strong>Ley 81:</strong> Protección de datos personales</li>
+                    <li>• <strong>DGI:</strong> Facturación electrónica oficial</li>
+                    <li>• <strong>Logs de auditoría:</strong> Trazabilidad completa</li>
+                    <li>• <strong>Backup:</strong> Respaldo de información</li>
+                    <li>• <strong>Roles:</strong> Control de acceso granular</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monitoreo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6><i class="material-symbols-rounded me-2">monitoring</i>Monitoreo y Performance</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="text-center">
+                    <i class="material-symbols-rounded text-success mb-2" style="font-size: 2rem;">speed</i>
+                    <h6>Performance</h6>
+                    <p class="text-sm">Tiempo de respuesta<br>< 200ms promedio</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-center">
+                    <i class="material-symbols-rounded text-info mb-2" style="font-size: 2rem;">trending_up</i>
+                    <h6>Escalabilidad</h6>
+                    <p class="text-sm">Auto-scaling<br>Render.com</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-center">
+                    <i class="material-symbols-rounded text-warning mb-2" style="font-size: 2rem;">error</i>
+                    <h6>Error Tracking</h6>
+                    <p class="text-sm">Logs centralizados<br>Alertas automáticas</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-center">
+                    <i class="material-symbols-rounded text-primary mb-2" style="font-size: 2rem;">health_and_safety</i>
+                    <h6>Uptime</h6>
+                    <p class="text-sm">99.9% disponibilidad<br>Monitoreo 24/7</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de regreso -->
+      <div class="row">
+        <div class="col-12">
+          <a href="dashboard.html" class="btn btn-primary">
+            <i class="material-symbols-rounded me-2">arrow_back</i>
+            Volver al Dashboard
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

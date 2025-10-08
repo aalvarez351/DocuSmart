@@ -3,16 +3,173 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>DocuSmart - Reportes</title>
+  <title>DocuSmart - Reportes y Analytics</title>
   <link href="../assets/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="g-sidenav-show bg-gray-200">
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-    <div class="container-fluid py-2">
-      <h1>Reportes</h1>
-      <p>Módulo de reportes y analytics en desarrollo...</p>
-      <a href="dashboard.html" class="btn btn-primary">Volver al Dashboard</a>
+    <div class="container-fluid py-4">
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6>Analytics de Operaciones</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <canvas id="ventasChart" width="400" height="200"></canvas>
+                </div>
+                <div class="col-lg-6">
+                  <canvas id="operacionesChart" width="400" height="200"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6>Métricas Detalladas</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table align-items-center mb-0" id="metricas-table">
+                  <thead>
+                    <tr>
+                      <th>Métrica</th>
+                      <th>Este Mes</th>
+                      <th>Mes Anterior</th>
+                      <th>Cambio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Facturas Creadas</td>
+                      <td id="facturas-actual">-</td>
+                      <td id="facturas-anterior">-</td>
+                      <td id="facturas-cambio">-</td>
+                    </tr>
+                    <tr>
+                      <td>Clientes Nuevos</td>
+                      <td id="clientes-actual">-</td>
+                      <td id="clientes-anterior">-</td>
+                      <td id="clientes-cambio">-</td>
+                    </tr>
+                    <tr>
+                      <td>Contratos Generados</td>
+                      <td id="contratos-actual">-</td>
+                      <td id="contratos-anterior">-</td>
+                      <td id="contratos-cambio">-</td>
+                    </tr>
+                    <tr>
+                      <td>Ingresos Totales</td>
+                      <td id="ingresos-actual">-</td>
+                      <td id="ingresos-anterior">-</td>
+                      <td id="ingresos-cambio">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-12">
+          <a href="dashboard.html" class="btn btn-primary">Volver al Dashboard</a>
+        </div>
+      </div>
     </div>
   </main>
+  
+  <script>
+    let apiUrl = window.location.hostname === 'localhost' ? 
+      'http://localhost:3000/api' : 
+      'https://docusmart.onrender.com/api';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      loadAnalytics();
+    });
+    
+    async function loadAnalytics() {
+      try {
+        const token = localStorage.getItem('docusmart_token');
+        const response = await fetch(apiUrl + '/analytics/dashboard', {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          renderCharts(data);
+          updateMetricsTable(data.metricas);
+        }
+      } catch (error) {
+        console.error('Error cargando analytics:', error);
+      }
+    }
+    
+    function renderCharts(data) {
+      // Gráfico de ventas
+      const ventasCtx = document.getElementById('ventasChart').getContext('2d');
+      new Chart(ventasCtx, {
+        type: 'line',
+        data: {
+          labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Ventas ($)',
+            data: [1200, 1900, 3000, 5000, 2000, 3000],
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Ventas por Mes'
+            }
+          }
+        }
+      });
+      
+      // Gráfico de operaciones
+      const operacionesCtx = document.getElementById('operacionesChart').getContext('2d');
+      new Chart(operacionesCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Facturas', 'Contratos', 'Clientes'],
+          datasets: [{
+            data: [data.metricas.facturas_mes, data.metricas.contratos_generados, data.metricas.clientes_activos],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Distribución de Operaciones'
+            }
+          }
+        }
+      });
+    }
+    
+    function updateMetricsTable(metricas) {
+      document.getElementById('facturas-actual').textContent = metricas.facturas_mes;
+      document.getElementById('clientes-actual').textContent = metricas.clientes_activos;
+      document.getElementById('contratos-actual').textContent = metricas.contratos_generados;
+      document.getElementById('ingresos-actual').textContent = '$' + metricas.ingresos_mes.toLocaleString();
+    }
+  </script>
 </body>
 </html>

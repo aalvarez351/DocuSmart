@@ -232,6 +232,12 @@
                     Ver Reportes
                   </button>
                 </div>
+                <div class="col-md-6 mb-3">
+                  <button class="btn bg-gradient-secondary w-100" onclick="verProcesos()">
+                    <i class="material-symbols-rounded me-2">settings</i>
+                    Ver Procesos
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -393,12 +399,38 @@
     }
     
     // Cargar datos del dashboard
-    function loadDashboardData() {
-      // Simular datos por ahora
-      document.getElementById('facturas-mes').textContent = '12';
-      document.getElementById('clientes-activos').textContent = '8';
-      document.getElementById('contratos-generados').textContent = '5';
-      document.getElementById('ingresos-mes').textContent = '$15,420';
+    async function loadDashboardData() {
+      try {
+        const token = localStorage.getItem('docusmart_token');
+        const response = await fetch(apiUrl + '/analytics/dashboard', {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          const metricas = data.metricas;
+          
+          document.getElementById('facturas-mes').textContent = metricas.facturas_mes;
+          document.getElementById('clientes-activos').textContent = metricas.clientes_activos;
+          document.getElementById('contratos-generados').textContent = metricas.contratos_generados;
+          document.getElementById('ingresos-mes').textContent = '$' + metricas.ingresos_mes.toLocaleString();
+        } else {
+          // Fallback a datos simulados
+          document.getElementById('facturas-mes').textContent = '0';
+          document.getElementById('clientes-activos').textContent = '0';
+          document.getElementById('contratos-generados').textContent = '0';
+          document.getElementById('ingresos-mes').textContent = '$0';
+        }
+      } catch (error) {
+        console.error('Error cargando métricas:', error);
+        // Fallback a datos simulados
+        document.getElementById('facturas-mes').textContent = '0';
+        document.getElementById('clientes-activos').textContent = '0';
+        document.getElementById('contratos-generados').textContent = '0';
+        document.getElementById('ingresos-mes').textContent = '$0';
+      }
     }
     
     // Funciones de acciones rápidas
@@ -416,6 +448,10 @@
     
     function verReportes() {
       window.location.href = 'reportes.html';
+    }
+    
+    function verProcesos() {
+      window.location.href = 'procesos.html';
     }
     
     // Cerrar sesión

@@ -63,6 +63,7 @@ app.use('/api/facturas', require('./routes/facturas'));
 app.use('/api/contratos', require('./routes/contratos'));
 app.use('/api/integraciones', require('./routes/integraciones'));
 app.use('/api/webhooks', require('./routes/webhooks'));
+app.use('/api/analytics', require('./routes/analytics'));
 
 // Ruta de estado del servidor
 app.get('/api/status', (req, res) => {
