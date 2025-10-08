@@ -1,156 +1,18 @@
-name: Deploy DocuSmart
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  # Job para el Backend (Render.com)
-  deploy-backend:
+  deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
     steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: backend/package-lock.json
-
-    - name: Instalar dependencias del backend
-      run: |
-        cd backend
-        npm ci
-
-    - name: Ejecutar tests del backend
-      run: |
-        cd backend
-        npm test
-      env:
-        NODE_ENV: test
-        MONGO_URI: ${{ secrets.MONGO_URI_TEST }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-
-    - name: Deploy a Render
-      uses: johnbeynon/render-deploy-action@v0.0.8
-      with:
-        service-id: ${{ secrets.RENDER_SERVICE_ID }}
-        api-key: ${{ secrets.RENDER_API_KEY }}
-
-  # Job para el Frontend (GitHub Pages)
-  deploy-frontend:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    needs: deploy-backend
+    - uses: actions/checkout@v3
     
-    steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
-
-    - name: Instalar dependencias del frontend
-      run: |
-        cd frontend
-        npm ci
-
-    - name: Build del frontend
-      run: |
-        cd frontend
-        npm run build
-      env:
-        VITE_API_URL: ${{ secrets.VITE_API_URL_PROD }}
-        VITE_APP_NAME: DocuSmart
-        VITE_APP_VERSION: ${{ github.sha }}
-
-    - name: Deploy a GitHub Pages
+    - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./frontend/dist
-        cname: docusmart.pa
-
-  # Job para tests y linting
-  test-and-lint:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-
-    - name: Instalar dependencias
-      run: |
-        npm ci
-        cd backend && npm ci
-        cd ../frontend && npm ci
-
-    - name: Lint backend
-      run: |
-        cd backend
-        npm run lint
-
-    - name: Lint frontend
-      run: |
-        cd frontend
-        npm run lint
-
-    - name: Test backend
-      run: |
-        cd backend
-        npm test
-      env:
-        NODE_ENV: test
-        MONGO_URI: ${{ secrets.MONGO_URI_TEST }}
-        JWT_SECRET: test-secret
-
-    - name: Test frontend
-      run: |
-        cd frontend
-        npm test
-
-  # Job para verificar seguridad
-  security-check:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
-
-    - name: Audit de seguridad - Backend
-      run: |
-        cd backend
-        npm audit --audit-level moderate
-
-    - name: Audit de seguridad - Frontend
-      run: |
-        cd frontend
-        npm audit --audit-level moderate
-
-    - name: Verificar variables de entorno
-      run: |
-        echo "Verificando configuración de producción..."
-        if [ -z "${{ secrets.MONGO_URI }}" ]; then
-          echo "❌ MONGO_URI no configurado"
-          exit 1
-        fi
-        if [ -z "${{ secrets.JWT_SECRET }}" ]; then
-          echo "❌ JWT_SECRET no configurado"
-          exit 1
-        fi
-        echo "✅ Variables de entorno configuradas correctamente"
+        publish_dir: ./
+        publish_branch: gh-pages
