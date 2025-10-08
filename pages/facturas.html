@@ -3,16 +3,396 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>DocuSmart - Facturas</title>
+  <title>DocuSmart - Facturación Electrónica</title>
   <link href="../assets/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body class="g-sidenav-show bg-gray-200">
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-    <div class="container-fluid py-2">
-      <h1>Facturas</h1>
-      <p>Módulo de facturas en desarrollo...</p>
-      <a href="dashboard.html" class="btn btn-primary">Volver al Dashboard</a>
+    <div class="container-fluid py-4">
+      
+      <!-- Header -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h4 class="mb-0">Facturación Electrónica</h4>
+                  <p class="text-sm mb-0">Crea y gestiona facturas con validación DGI</p>
+                </div>
+                <button class="btn bg-gradient-primary" onclick="abrirModalFactura()">
+                  <i class="material-symbols-rounded me-2">receipt_long</i>
+                  Nueva Factura
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Facturas -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6>Lista de Facturas</h6>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Número</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cliente</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
+                      <th class="text-secondary opacity-7">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="facturas-tbody">
+                    <tr>
+                      <td colspan="6" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Cargando...</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de regreso -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <a href="dashboard.html" class="btn btn-secondary">
+            <i class="material-symbols-rounded me-2">arrow_back</i>
+            Volver al Dashboard
+          </a>
+        </div>
+      </div>
+
     </div>
   </main>
+
+  <!-- Modal Factura -->
+  <div class="modal fade" id="facturaModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nueva Factura</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="facturaForm">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group input-group-outline mb-3">
+                  <label class="form-label">Cliente *</label>
+                  <select class="form-control" id="clienteId" required>
+                    <option value="">Seleccionar cliente...</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group input-group-outline mb-3">
+                  <label class="form-label">Fecha</label>
+                  <input type="date" class="form-control" id="fecha" required>
+                </div>
+              </div>
+            </div>
+            
+            <h6>Items de la Factura</h6>
+            <div id="items-container">
+              <div class="item-row row mb-2">
+                <div class="col-md-5">
+                  <div class="input-group input-group-outline">
+                    <label class="form-label">Descripción</label>
+                    <input type="text" class="form-control item-descripcion" required>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group input-group-outline">
+                    <label class="form-label">Cantidad</label>
+                    <input type="number" class="form-control item-cantidad" min="1" value="1" required>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group input-group-outline">
+                    <label class="form-label">Precio</label>
+                    <input type="number" class="form-control item-precio" step="0.01" required>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group input-group-outline">
+                    <label class="form-label">Total</label>
+                    <input type="number" class="form-control item-total" readonly>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="eliminarItem(this)">
+                    <i class="material-symbols-rounded">delete</i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-primary btn-sm mb-3" onclick="agregarItem()">
+              <i class="material-symbols-rounded me-2">add</i>
+              Agregar Item
+            </button>
+            
+            <div class="row">
+              <div class="col-md-6 offset-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <span>Subtotal:</span>
+                      <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <span>ITBMS (7%):</span>
+                      <span id="impuestos">$0.00</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                      <strong>Total:</strong>
+                      <strong id="total">$0.00</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary" id="guardarBtn">
+              <span id="guardarText">Crear Factura</span>
+              <span id="guardarSpinner" class="spinner-border spinner-border-sm d-none ms-2"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+  
+  <script>
+    let apiUrl = window.location.hostname === 'localhost' ? 
+      'http://localhost:3000/api' : 
+      'https://docusmart.onrender.com/api';
+    
+    let facturaModal;
+    let clientes = [];
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      facturaModal = new bootstrap.Modal(document.getElementById('facturaModal'));
+      cargarFacturas();
+      cargarClientes();
+      
+      document.getElementById('facturaForm').addEventListener('submit', guardarFactura);
+      document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+      
+      // Event listeners para cálculos
+      document.addEventListener('input', function(e) {
+        if (e.target.classList.contains('item-cantidad') || e.target.classList.contains('item-precio')) {
+          calcularTotales();
+        }
+      });
+    });
+    
+    async function cargarFacturas() {
+      try {
+        const token = localStorage.getItem('docusmart_token');
+        const response = await fetch(apiUrl + '/facturas', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        
+        if (response.ok) {
+          const facturas = await response.json();
+          mostrarFacturas(facturas);
+        } else {
+          throw new Error('Error cargando facturas');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('facturas-tbody').innerHTML = 
+          '<tr><td colspan="6" class="text-center py-4">Error cargando facturas</td></tr>';
+      }
+    }
+    
+    async function cargarClientes() {
+      try {
+        const token = localStorage.getItem('docusmart_token');
+        const response = await fetch(apiUrl + '/clientes', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        
+        if (response.ok) {
+          clientes = await response.json();
+          const select = document.getElementById('clienteId');
+          select.innerHTML = '<option value="">Seleccionar cliente...</option>' +
+            clientes.map(c => `<option value="${c._id}">${c.nombre}</option>`).join('');
+        }
+      } catch (error) {
+        console.error('Error cargando clientes:', error);
+      }
+    }
+    
+    function mostrarFacturas(facturas) {
+      const tbody = document.getElementById('facturas-tbody');
+      
+      if (facturas.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No hay facturas registradas</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = facturas.map(factura => `
+        <tr>
+          <td><span class="badge bg-gradient-primary">${factura.numero}</span></td>
+          <td>${factura.clienteId?.nombre || 'Cliente eliminado'}</td>
+          <td class="text-center">${new Date(factura.fecha).toLocaleDateString()}</td>
+          <td class="text-center">$${factura.total.toFixed(2)}</td>
+          <td class="text-center">
+            <span class="badge bg-gradient-${getEstadoColor(factura.estado)}">${factura.estado}</span>
+          </td>
+          <td>
+            <button class="btn btn-link text-secondary mb-0" onclick="verFactura('${factura._id}')">
+              <i class="material-symbols-rounded text-xs">visibility</i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    
+    function getEstadoColor(estado) {
+      const colores = {
+        'borrador': 'secondary',
+        'enviada': 'info',
+        'pagada': 'success',
+        'cancelada': 'danger'
+      };
+      return colores[estado] || 'secondary';
+    }
+    
+    function abrirModalFactura() {
+      document.getElementById('facturaForm').reset();
+      document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+      facturaModal.show();
+    }
+    
+    function agregarItem() {
+      const container = document.getElementById('items-container');
+      const itemRow = document.querySelector('.item-row').cloneNode(true);
+      itemRow.querySelectorAll('input').forEach(input => input.value = input.type === 'number' && input.classList.contains('item-cantidad') ? '1' : '');
+      container.appendChild(itemRow);
+    }
+    
+    function eliminarItem(btn) {
+      const container = document.getElementById('items-container');
+      if (container.children.length > 1) {
+        btn.closest('.item-row').remove();
+        calcularTotales();
+      }
+    }
+    
+    function calcularTotales() {
+      let subtotal = 0;
+      
+      document.querySelectorAll('.item-row').forEach(row => {
+        const cantidad = parseFloat(row.querySelector('.item-cantidad').value) || 0;
+        const precio = parseFloat(row.querySelector('.item-precio').value) || 0;
+        const total = cantidad * precio;
+        
+        row.querySelector('.item-total').value = total.toFixed(2);
+        subtotal += total;
+      });
+      
+      const impuestos = subtotal * 0.07; // ITBMS 7%
+      const total = subtotal + impuestos;
+      
+      document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+      document.getElementById('impuestos').textContent = '$' + impuestos.toFixed(2);
+      document.getElementById('total').textContent = '$' + total.toFixed(2);
+    }
+    
+    async function guardarFactura(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('guardarBtn');
+      const text = document.getElementById('guardarText');
+      const spinner = document.getElementById('guardarSpinner');
+      
+      btn.disabled = true;
+      text.classList.add('d-none');
+      spinner.classList.remove('d-none');
+      
+      try {
+        const items = [];
+        let subtotal = 0;
+        
+        document.querySelectorAll('.item-row').forEach(row => {
+          const descripcion = row.querySelector('.item-descripcion').value;
+          const cantidad = parseFloat(row.querySelector('.item-cantidad').value);
+          const precio = parseFloat(row.querySelector('.item-precio').value);
+          const total = cantidad * precio;
+          
+          if (descripcion && cantidad && precio) {
+            items.push({ descripcion, cantidad, precio, total });
+            subtotal += total;
+          }
+        });
+        
+        const impuestos = subtotal * 0.07;
+        const total = subtotal + impuestos;
+        
+        const facturaData = {
+          clienteId: document.getElementById('clienteId').value,
+          fecha: document.getElementById('fecha').value,
+          items,
+          subtotal,
+          impuestos,
+          total
+        };
+        
+        const token = localStorage.getItem('docusmart_token');
+        const response = await fetch(apiUrl + '/facturas', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(facturaData)
+        });
+        
+        if (response.ok) {
+          facturaModal.hide();
+          cargarFacturas();
+          alert('Factura creada exitosamente');
+        } else {
+          throw new Error('Error creando factura');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error creando factura');
+      } finally {
+        btn.disabled = false;
+        text.classList.remove('d-none');
+        spinner.classList.add('d-none');
+      }
+    }
+    
+    function verFactura(id) {
+      alert('Vista de factura en desarrollo');
+    }
+  </script>
 </body>
 </html>

@@ -161,8 +161,12 @@
   <script src="../assets/js/material-dashboard.min.js"></script>
   
   <script>
-    const apiUrl = 'http://localhost:3000/api';
+    let apiUrl = window.location.hostname === 'localhost' ? 
+      'http://localhost:3000/api' : 
+      'https://docusmart.onrender.com/api';
+    
     let clients = [];
+    let editingClient = null;
 
     document.addEventListener('DOMContentLoaded', function() {
       checkAuth();
@@ -177,14 +181,14 @@
     }
 
     function showAddClientModal() {
+      editingClient = null;
+      document.querySelector('#addClientModal .modal-title').textContent = 'Nuevo Cliente';
+      document.getElementById('clientForm').reset();
       const modal = new bootstrap.Modal(document.getElementById('addClientModal'));
       modal.show();
     }
 
-    function saveClient() {
-      const form = document.getElementById('clientForm');
-      const formData = new FormData(form);
-      
+    async function saveClient() {
       const client = {
         nombre: document.getElementById('nombre').value,
         rucIdentidad: document.getElementById('rucIdentidad').value,
@@ -193,27 +197,56 @@
         direccion: document.getElementById('direccion').value
       };
 
-      // Simular guardado (aquí iría la llamada al API)
-      clients.push({
-        ...client,
-        id: Date.now()
-      });
-      
-      renderClients();
-      
-      // Cerrar modal
-      const modal = bootstrap.Modal.getInstance(document.getElementById('addClientModal'));
-      modal.hide();
-      
-      // Limpiar formulario
-      form.reset();
-      
-      alert('Cliente guardado exitosamente');
+      try {
+        const token = localStorage.getItem('docusmart_token');
+        const url = editingClient ? 
+          `${apiUrl}/clientes/${editingClient}` : 
+          `${apiUrl}/clientes`;
+        const method = editingClient ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(client)
+        });
+
+        if (response.ok) {
+          const modal = bootstrap.Modal.getInstance(document.getElementById('addClientModal'));
+          modal.hide();
+          document.getElementById('clientForm').reset();
+          loadClients();
+          alert('Cliente guardado exitosamente');
+        } else {
+          throw new Error('Error guardando cliente');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error guardando cliente');
+      }
     }
 
-    function loadClients() {
-      // Simular carga de clientes
-      renderClients();
+    async function loadClients() {
+      try {
+        const token = localStorage.getItem('docusmart_token');
+        const response = await fetch(`${apiUrl}/clientes`, {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+
+        if (response.ok) {
+          clients = await response.json();
+          renderClients();
+        } else {
+          throw new Error('Error cargando clientes');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        renderClients();
+      }
     }
 
     function renderClients() {
@@ -253,10 +286,10 @@
             <p class="text-xs font-weight-bold mb-0">${client.telefono || 'Sin teléfono'}</p>
           </td>
           <td class="align-middle">
-            <button class="btn btn-link text-secondary mb-0" onclick="editClient(${client.id})">
+            <button class="btn btn-link text-secondary mb-0" onclick="editClient('${client._id}')">
               <i class="material-symbols-rounded text-sm">edit</i>
             </button>
-            <button class="btn btn-link text-danger mb-0" onclick="deleteClient(${client.id})">
+            <button class="btn btn-link text-danger mb-0" onclick="deleteClient('${client._id}')">
               <i class="material-symbols-rounded text-sm">delete</i>
             </button>
           </td>
@@ -265,14 +298,43 @@
     }
 
     function editClient(id) {
-      alert('Función de editar en desarrollo');
+      const client = clients.find(c => c._id === id);
+      if (!client) return;
+      
+      editingClient = id;
+      document.querySelector('#addClientModal .modal-title').textContent = 'Editar Cliente';
+      
+      document.getElementById('nombre').value = client.nombre;
+      document.getElementById('rucIdentidad').value = client.rucIdentidad;
+      document.getElementById('email').value = client.email || '';
+      document.getElementById('telefono').value = client.telefono || '';
+      document.getElementById('direccion').value = client.direccion || '';
+      
+      const modal = new bootstrap.Modal(document.getElementById('addClientModal'));
+      modal.show();
     }
 
-    function deleteClient(id) {
-      if (confirm('¿Estás seguro de eliminar este cliente?')) {
-        clients = clients.filter(c => c.id !== id);
-        renderClients();
-        alert('Cliente eliminado');
+    async function deleteClient(id) {
+      if (!confirm('¿Estás seguro de eliminar este cliente?')) return;
+      
+      try {
+        const token = localStorage.getItem('docusmart_token');
+        const response = await fetch(`${apiUrl}/clientes/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+
+        if (response.ok) {
+          loadClients();
+          alert('Cliente eliminado');
+        } else {
+          throw new Error('Error eliminando cliente');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error eliminando cliente');
       }
     }
   </script>
