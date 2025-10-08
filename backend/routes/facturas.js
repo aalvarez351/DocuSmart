@@ -1,9 +1,10 @@
 const express = require('express');
+const { auth } = require('../middleware/auth');
+
 const router = express.Router();
 
-// Placeholder para rutas de facturas
-router.get('/', (req, res) => {
-  res.json({ message: 'Rutas de facturas - En desarrollo' });
+router.get('/', auth, async (req, res) => {
+  res.json({ message: 'Ruta de facturas funcionando' });
 });
 
 module.exports = router;

@@ -1,9 +1,9 @@
 const express = require('express');
+
 const router = express.Router();
 
-// Placeholder para rutas de webhooks
-router.post('/pac', (req, res) => {
-  res.json({ message: 'Webhook PAC - En desarrollo' });
+router.post('/', async (req, res) => {
+  res.json({ message: 'Webhook recibido' });
 });
 
 module.exports = router;
