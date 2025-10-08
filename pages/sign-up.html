@@ -186,19 +186,6 @@
   <!--   Core JS Files   -->
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script>
-    // Fix PerfectScrollbar error
-    window.addEventListener('load', function() {
-      try {
-        if (typeof Scrollbar !== 'undefined') {
-          const scrollElements = document.querySelectorAll('.ps, #sidenav-scrollbar');
-          scrollElements.forEach(el => {
-            if (el) Scrollbar.init(el, { damping: '0.5' });
-          });
-        }
-      } catch (e) { console.log('PerfectScrollbar init skipped'); }
-    });
-  </script>
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
@@ -342,6 +329,24 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script>
+    // Override PerfectScrollbar initialization to prevent errors
+    window.addEventListener('DOMContentLoaded', function() {
+      // Disable automatic PerfectScrollbar initialization
+      if (typeof Scrollbar !== 'undefined') {
+        const originalInit = Scrollbar.init;
+        Scrollbar.init = function(element, options) {
+          if (element && element.nodeType === 1) {
+            try {
+              return originalInit.call(this, element, options);
+            } catch (e) {
+              console.log('PerfectScrollbar init prevented for:', element);
+            }
+          }
+        };
+      }
+    });
+  </script>
   <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
 </body>
 

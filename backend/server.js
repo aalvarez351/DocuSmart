@@ -11,6 +11,9 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 const JWT_SECRET = process.env.JWT_SECRET || 'docusmart-super-secret-key-2024-panama-jwt-256-bits';
 
+// Trust proxy para Render.com
+app.set('trust proxy', 1);
+
 // Middleware de seguridad
 app.use(helmet());
 app.use(compression());
