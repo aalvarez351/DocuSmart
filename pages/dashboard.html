@@ -351,7 +351,9 @@
   <script>
     // Variables globales
     let currentUser = null;
-    let apiUrl = 'http://localhost:3000/api';
+    let apiUrl = window.location.hostname === 'localhost' ? 
+      'http://localhost:3000/api' : 
+      'https://docusmart.onrender.com/api';
     
     // Verificar autenticación al cargar
     document.addEventListener('DOMContentLoaded', function() {

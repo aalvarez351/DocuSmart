@@ -214,7 +214,9 @@
   <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
   
   <script>
-    const apiUrl = 'http://localhost:3000/api';
+    const apiUrl = window.location.hostname === 'localhost' ? 
+      'http://localhost:3000/api' : 
+      'https://docusmart.onrender.com/api';
     
     // Verificar si ya está logueado
     document.addEventListener('DOMContentLoaded', function() {

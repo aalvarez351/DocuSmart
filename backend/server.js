@@ -67,6 +67,21 @@ app.get('/api/status', (req, res) => {
   });
 });
 
+// Ruta raíz
+app.get('/', (req, res) => {
+  res.json({
+    message: 'DocuSmart API - Asistente Legal-Contable con IA',
+    version: '1.0.0',
+    status: 'activo',
+    endpoints: {
+      status: '/api/status',
+      auth: '/api/auth',
+      empresas: '/api/empresas',
+      clientes: '/api/clientes'
+    }
+  });
+});
+
 // Ruta de salud
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', service: 'DocuSmart API' });
